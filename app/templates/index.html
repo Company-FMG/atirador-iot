@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Controle Arduino</title>
+</head>
+<body>
+  <h1>Controle Arduino</h1>
+
+  <!-- Estado do sensor PIR -->
+  <div>
+    <h3>Estado do Sensor PIR: <span id="pir-status">{{ pir_status }}</span></h3>
+  </div>
+
+  <audio id="alert-sound" preload="auto">
+    <source src="../utils/vine-boom.mp3" type="audio/mp3">
+    Seu navegador não suporta a reprodução de áudio.
+  </audio>
+
+  <!-- Controle deslizante para o Servo 1 -->
+  <div>
+    <h3>Controle do Servo 1:</h3>
+    <input type="range" id="servo1-range" min="0" max="180" value="0" oninput="moveServo1(this.value)">
+    <p>Ângulo atual: <span id="servo1-angle">0</span></p>
+  </div>
+
+  <!-- Botão para acionar o Servo 2 -->
+  <div>
+    <h3>Controle do Servo 2:</h3>
+    <button onclick="triggerServo2()">Acionar Gatilho</button>
+  </div>
+
+  <script>
+    // Função para mover o Servo 1
+    async function moveServo1(angle) {
+      document.getElementById('servo1-angle').textContent = angle;
+      await fetch('/api/move_servo', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ servo_angle: angle }),
+      });
+    }
+
+    // Função para acionar o Servo 2
+    async function triggerServo2() {
+      await fetch('/api/trigger', { method: 'POST' });
+      alert("Gatilho acionado!");
+    }
+
+    // Função para tocar o som de alerta padrão (só para efeito de exemplo)
+    function playAlertSound() {
+      var sound = document.getElementById('alert-sound');
+      sound.play();
+    }
+
+    // Atualiza o estado do PIR periodicamente
+    setInterval(async () => {
+      const response = await fetch('/api/pir_status');
+      const data = await response.json();
+      document.getElementById('pir-status').textContent = data.pir_status;
+
+      // Verifica se o status do PIR é de movimento detectado
+      if (data.pir_status === "Motion detected!") {
+        playAlertSound(); // Toca o som de alerta
+      }
+    }, 1000);
+  </script>
+</body>
+</html>

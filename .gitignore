@@ -1,0 +1,64 @@
+# Bytecode do Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Configurações do ambiente virtual
+venv/
+env/
+.venv/
+.env/
+
+# Logs
+*.log
+*.out
+*.err
+
+# Arquivos de IDEs e editores
+.vscode/
+.idea/
+*.swp
+*.swo
+*.swn
+
+# Dependências instaladas
+*.egg-info/
+dist/
+build/
+
+# Arquivos de sistema
+.DS_Store
+Thumbs.db
+
+# Testes e dados mockados
+*.mock
+*.test_data
+
+# Arquivos temporários
+*.tmp
+*.bak
+*.swp
+
+# Configurações de ambiente
+.env
+*.env
+
+# Arquivos de banco de dados locais
+*.sqlite3
+*.db
+
+# Dados gerados pelo MockArduino
+mock_data/
+
+# Arquivos de cobertura de teste
+.coverage
+htmlcov/
+
+# Python Poetry
+poetry.lock
+.mypy_cache/
+
+# Arquivos específicos do Flask
+instance/
+*.pid
